@@ -11,14 +11,14 @@
     tools:context="sqlite.pa036.MainActivity">
 
     <Button
-        android:text="SELECT * FROM songs1"
+        android:text="Run"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/button"
         android:layout_alignParentTop="true"
-        android:onClick="selectAllSongs1" />
+        android:onClick="Run" />
 
     <ScrollView
         android:layout_width="match_parent"
