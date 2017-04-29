@@ -74,7 +74,8 @@ public class Song {
 
     @Override
     public String toString() {
-        return  "nameOfSong = '" + nameOfSong + '\n' +
+        return  "id = '" + id + '\n' +
+                "nameOfSong = '" + nameOfSong + '\n' +
                 "nameOfAuthor = '" + nameOfAuthor + '\n' +
                 "length = " + length + '\n' +
                 "dateAdded = " + dateAdded + '\n' +

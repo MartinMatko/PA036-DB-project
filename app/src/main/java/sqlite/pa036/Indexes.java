@@ -19,75 +19,84 @@ public final class Indexes extends DBHelper {
 
     @Override
     protected void Tests() {
-
+        TestAuthorAndLength();
     }
+    //authors = 6G50F 24095 2WKYO
+    //songs = WEACQ25 0WXXD8182 OQ5TT599998
 
-    public boolean insertSong(Song song, String table) {
-        ContentValues contentValues = songToContentValues(song);
-        myDataBase.insert(table, null, contentValues);
-        return true;
-    }
-
-    public Song getSongByName(String name, String table) {
-        Cursor cursor = null;
-        Song song = new Song();
-        try {
-            cursor = myDataBase.rawQuery("SELECT * FROM " + table +" WHERE name=?", new String[] {name});
-            if(cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                song = cursorToSong(cursor);
-            }
-            return song;
-        }finally {
-            cursor.close();
+    private void TestAuthor(){
+        long start = System.currentTimeMillis();
+        ArrayList<Song> songs = this.getSongsByAuthor("2WKYO");
+        long finish = System.currentTimeMillis();
+        for (Song song: songs) {
+            System.out.println(song);
         }
+        System.out.println(finish-start);
     }
 
-    public boolean updateSong(Song song, String table) {
-        ContentValues contentValues = songToContentValues(song);
-        myDataBase.update(table, contentValues, "name = ? ", new String[] { song.getNameOfSong() } );
-        return true;
-    }
-
-    public Integer deleteSong(String name, String table) {
-        return myDataBase.delete(table,
-                "name = ? ",
-                new String[] { name });
-    }
-
-    public ArrayList<Song> getAllSongs(String table) {
-        ArrayList<Song> array_list = new ArrayList<>();
-        long diff = System.currentTimeMillis();
-        Cursor cursor =  myDataBase.rawQuery( "select * from " + table, null );
-        diff = System.currentTimeMillis() - diff;
-        System.out.println(diff);
-        cursor.moveToFirst();
-
-        while(cursor.isAfterLast() == false){
-            array_list.add(cursorToSong(cursor));
-            cursor.moveToNext();
+    private void TestAuthorWithSingleColumn(){
+        myDataBase.execSQL("CREATE INDEX author_idx ON songs (author)");
+        long start = System.currentTimeMillis();
+        ArrayList<Song> songs = this.getSongsByAuthor("2WKYO");
+        long finish = System.currentTimeMillis();
+        for (Song song: songs) {
+            System.out.println(song);
         }
-        return array_list;
+        System.out.println(finish-start);
     }
 
-    public Song cursorToSong(Cursor cursor){
-        Song song = new Song();
-        long tmp = cursor.getLong(cursor.getColumnIndex("date"));
-        song.setDateAdded(new Date(cursor.getLong(cursor.getColumnIndex("date"))));
-        song.setLength(cursor.getDouble(cursor.getColumnIndex("length")));
-        song.setNameOfAuthor(cursor.getString(cursor.getColumnIndex("author")));
-        song.setNameOfSong(cursor.getString(cursor.getColumnIndex("name")));
-        song.setTextOfSong(cursor.getString(cursor.getColumnIndex("text_of_song")));
-        return song;
+    private void TestAuthorAndLength(){
+        long start = System.currentTimeMillis();
+        ArrayList<Song> songs = this.getSongsByAuthorAndLength("2WKYO", 5);
+        long finish = System.currentTimeMillis();
+        for (Song song: songs) {
+            System.out.println(song);
+        }
+        System.out.println(finish-start);
     }
 
-    public ContentValues songToContentValues(Song song){
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", song.getNameOfSong());
-        contentValues.put("author", song.getNameOfAuthor());
-        contentValues.put("text_of_song", song.getTextOfSong());
-        contentValues.put("date", song.getDateAdded().getTime());
-        contentValues.put("length", song.getLength());
-        return contentValues;
+    private void TestAuthorAndDateWithComposite(){
+        myDataBase.execSQL("CREATE INDEX author_idx ON songs (author)");
+        long start = System.currentTimeMillis();
+        ArrayList<Song> songs = this.getSongsByAuthorAndLength("2WKYO", 5);
+        long finish = System.currentTimeMillis();
+        for (Song song: songs) {
+            System.out.println(song);
+        }
+        System.out.println(finish-start);
+    }
+
+    private void TestName(){
+        long start = System.currentTimeMillis();
+        Song song = this.getSongByName("OQ5TT599998");
+        long finish = System.currentTimeMillis();
+        System.out.println(song);
+        System.out.println(finish-start);
+    }
+
+    private void TestNameWithUniqueColumn(){
+        myDataBase.execSQL("CREATE UNIQUE INDEX name_idx ON songs (name)");
+        long start = System.currentTimeMillis();
+        Song song = this.getSongByName("OQ5TT599998");
+        long finish = System.currentTimeMillis();
+        System.out.println(song);
+        System.out.println(finish-start);
+    }
+
+    private void TestInsert(){
+        Song song = new Song("Waka waka", "Shakira", "waka waka oleeee", 5, new Date(System.currentTimeMillis()));
+        long start = System.currentTimeMillis();
+        insertSong(song);
+        long finish = System.currentTimeMillis();
+        System.out.println(finish-start);
+    }
+
+    private void TestInsertWithUniqueColumn(){
+        Song song = new Song("Waka waka", "Shakira", "waka waka oleeee", 5, new Date(System.currentTimeMillis()));
+        myDataBase.execSQL("CREATE UNIQUE INDEX name_idx ON songs (name)");
+        long start = System.currentTimeMillis();
+        insertSong(song);
+        long finish = System.currentTimeMillis();
+        System.out.println(finish-start);
     }
 }

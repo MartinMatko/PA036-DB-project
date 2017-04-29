@@ -27,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
         // RunTests() potom spusti vasu implemntaciu metody Tests() a po jej dokonceni uzavrie spojenie s databazou a zmaze databazu zo systemoveho uloziska takze pri opakovanych testoch sa vam vzdy nahra rovnaka nezmenena databaza.
         // Databaza sa otvara ako readwrite cize sa da aj citat aj zapisovat, na pristup mozete pouzit myDataBase, meno databazy je pristupne cez myDbName a kontext cez myContext.
 
-        /*
-        db = new Indexes(this, "db100.db");
+        db = new Indexes(this, "db10000.db");
         db.runTests();
+        /*
         db = new Indexes(this, "db10000.db");
         db.runTests();
         db = new Indexes(this, "db1000000.db");
