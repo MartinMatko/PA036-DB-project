@@ -19,7 +19,7 @@ public final class Indexes extends DBHelper {
 
     @Override
     protected void Tests() {
-        TestAuthorAndLength();
+        TestInsertWithCompositeUnique();
     }
     //authors = 6G50F 24095 2WKYO
     //songs = WEACQ25 0WXXD8182 OQ5TT599998
@@ -47,7 +47,7 @@ public final class Indexes extends DBHelper {
 
     private void TestAuthorAndLength(){
         long start = System.currentTimeMillis();
-        ArrayList<Song> songs = this.getSongsByAuthorAndLength("2WKYO", 5);
+        ArrayList<Song> songs = this.getSongsByAuthorAndLength("6G50F", 5);
         long finish = System.currentTimeMillis();
         for (Song song: songs) {
             System.out.println(song);
@@ -55,8 +55,19 @@ public final class Indexes extends DBHelper {
         System.out.println(finish-start);
     }
 
-    private void TestAuthorAndDateWithComposite(){
-        myDataBase.execSQL("CREATE INDEX author_idx ON songs (author)");
+    private void TestAuthorAndLengthWithComposite(){
+        myDataBase.execSQL("CREATE INDEX author_and_length_idx ON songs (author, length)");
+        long start = System.currentTimeMillis();
+        ArrayList<Song> songs = this.getSongsByAuthorAndLength("6G50F", 5);
+        long finish = System.currentTimeMillis();
+        for (Song song: songs) {
+            System.out.println(song);
+        }
+        System.out.println(finish-start);
+    }
+
+    private void TestAuthorAndLengthWithCompositeUnique(){
+        myDataBase.execSQL("CREATE UNIQUE INDEX author_and_length_idx ON songs (author, length)");
         long start = System.currentTimeMillis();
         ArrayList<Song> songs = this.getSongsByAuthorAndLength("2WKYO", 5);
         long finish = System.currentTimeMillis();
@@ -84,19 +95,41 @@ public final class Indexes extends DBHelper {
     }
 
     private void TestInsert(){
-        Song song = new Song("Waka waka", "Shakira", "waka waka oleeee", 5, new Date(System.currentTimeMillis()));
+        Song song = new Song("Cocoo Jumbo", "Mr. President", "Put me up, put me down, coco jumbo", 5, new Date(System.currentTimeMillis()));
         long start = System.currentTimeMillis();
         insertSong(song);
         long finish = System.currentTimeMillis();
+        deleteSong("Cocoo Jumbo");
         System.out.println(finish-start);
     }
 
-    private void TestInsertWithUniqueColumn(){
-        Song song = new Song("Waka waka", "Shakira", "waka waka oleeee", 5, new Date(System.currentTimeMillis()));
-        myDataBase.execSQL("CREATE UNIQUE INDEX name_idx ON songs (name)");
+    private void TestInsertWithSingleColumn(){
+        Song song = new Song("Cocoo Jumbo", "Mr. President", "Put me up, put me down, coco jumbo", 5, new Date(System.currentTimeMillis()));
+        myDataBase.execSQL("CREATE INDEX name_idx ON songs (author)");
         long start = System.currentTimeMillis();
         insertSong(song);
         long finish = System.currentTimeMillis();
+        deleteSong("Cocoo Jumbo");
+        System.out.println(finish-start);
+    }
+
+    private void TestInsertWithComposite(){
+        Song song = new Song("Cocoo Jumbo", "Mr. President", "Put me up, put me down, coco jumbo", 5, new Date(System.currentTimeMillis()));
+        myDataBase.execSQL("CREATE INDEX name_idx ON songs (author, length)");
+        long start = System.currentTimeMillis();
+        insertSong(song);
+        long finish = System.currentTimeMillis();
+        deleteSong("Cocoo Jumbo");
+        System.out.println(finish-start);
+    }
+
+    private void TestInsertWithCompositeUnique(){
+        Song song = new Song("Cocoo Jumbo", "Mr. President", "Put me up, put me down, coco jumbo", 5, new Date(System.currentTimeMillis()));
+        myDataBase.execSQL("CREATE UNIQUE INDEX name_idx ON songs (author, length)");
+        long start = System.currentTimeMillis();
+        insertSong(song);
+        long finish = System.currentTimeMillis();
+        deleteSong("Cocoo Jumbo");
         System.out.println(finish-start);
     }
 }

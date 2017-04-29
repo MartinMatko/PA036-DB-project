@@ -171,8 +171,8 @@ public abstract class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Integer deleteSong(String name, String table) {
-        return myDataBase.delete(table,
+    public Integer deleteSong(String name) {
+        return myDataBase.delete("songs",
                 "name = ? ",
                 new String[] { name });
     }
