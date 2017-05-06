@@ -21,6 +21,7 @@
         android:onClick="Run" />
 
     <ScrollView
+        android:id="@+id/logger"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -31,16 +32,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
+
             <TextView
-                android:text=""
+                android:id="@+id/numberView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/numberView"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:text=""
                 android:textSize="10sp" />
         </LinearLayout>
 
     </ScrollView>
+
 </RelativeLayout>

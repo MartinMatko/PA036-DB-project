@@ -1,14 +1,8 @@
 package sqlite.pa036;
 
-import android.database.SQLException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
-
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,14 +28,15 @@ public class MainActivity extends AppCompatActivity {
         db.runTests();
         db = new Indexes(this, "db1000000.db");
         db.runTests();
-
-        db = new Storage(this, "db100.db");
-        db.runTests();
-        db = new Storage(this, "db10000.db");
-        db.runTests();
-        db = new Storage(this, "db1000000.db");
-        db.runTests();
-
+*/
+        //db = new Storage(this, "db100.db");
+        //db = new Storage(this, "db100000.db");
+        //db.runTests();
+        //db = new Storage(this, "db10000.db");
+        //db.runTests();
+        //db = new Storage(this, "db1000000.db");
+        //db.runTests();
+/*
         db = new ProsCons(this, "db100.db");
         db.runTests();
         db = new ProsCons(this, "db10000.db");
@@ -56,9 +51,5 @@ public class MainActivity extends AppCompatActivity {
         db = new Paralelization(this, "db1000000.db");
         db.runTests();
         */
-
-
-
-
     }
 }
