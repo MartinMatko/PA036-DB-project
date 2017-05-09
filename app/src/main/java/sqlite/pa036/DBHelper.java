@@ -105,6 +105,8 @@ public abstract class DBHelper extends SQLiteOpenHelper {
     private void cleanUp(){
 
         if(myDataBase != null) {
+            if(myDataBase.isOpen())
+                myDataBase.close();
             myContext.deleteDatabase(myDbName);
             myDataBase = null;
         }
@@ -117,7 +119,25 @@ public abstract class DBHelper extends SQLiteOpenHelper {
 //        cleanUp();
     }
 
+    protected void reloadDatabase() {
+        cleanUp();
+        try{
+            createDataBase();
+        }
+        catch (IOException ioe){
+            throw new Error("Unable to create database");
+        }
+
+        try{
+            openDataBase();
+        }
+        catch(SQLException sqle){
+            throw sqle;
+        }
+    }
+
     protected abstract void Tests();
+
 
     public boolean insertSong(Song song) {
         ContentValues contentValues = songToContentValues(song);

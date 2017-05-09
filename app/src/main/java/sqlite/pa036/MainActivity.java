@@ -3,6 +3,7 @@ package sqlite.pa036;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
         db.runTests();
         db = new ProsCons(this, "db1000000.db");
         db.runTests();
-
-        db = new Paralelization(this, "db100.db");
+*/
+        db = new Paralelization(this, "db100.db", (TextView)findViewById(R.id.numberView));
         db.runTests();
-        db = new Paralelization(this, "db10000.db");
+        /*db = new Paralelization(this, "db10000.db", (TextView)findViewById(R.id.numberView));
         db.runTests();
-        db = new Paralelization(this, "db1000000.db");
+        db = new Paralelization(this, "db1000000.db", (TextView)findViewById(R.id.numberView));
         db.runTests();
         */
     }
